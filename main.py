@@ -12,7 +12,7 @@ from replit import db
 #Variables
 client = slash.SlashBot(
     command_prefix='/',
-    description='',
+    description='A custom Discord bot.',
     help_command=None,
     debug_guild=int(os.environ.get('DISCORD_DEBUG_GUILD', 0)) or None,
     resolve_not_fetch=False,
