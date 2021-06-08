@@ -13,7 +13,7 @@ SETTINGS = {
         'cog_admin',
         'cog_creator',
         'cog_roles',
-        #'cog_audio',
+        'cog_audio',
     ],
     'JOINABLE_ROLES': [
         '🎮 Party games',

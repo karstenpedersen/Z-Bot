@@ -125,34 +125,44 @@ class CogCommands(commands.Cog):
         async def party(ctx: slash.Context):
             """Party commands."""
             print('Options:', ctx.options)
-        
+
         @party.slash_cmd(name='youtube')
         async def cmd_party_youtube(ctx: slash.Context):
             """Create a youtube party."""
-            link = together_controls.create_link(ctx.author.voice.channel.id, 'youtube')
+            link = together_controls.create_link(ctx.author.voice.channel.id,
+                                                 'youtube')
             await ctx.respond(f"Click the blue link!\n{link}")
 
         @party.slash_cmd(name='other')
-        async def cmd_party_other(ctx: slash.Context, activity: slash.Option(description='Activity', required=True, choices=['youtube', 'poker', 'chess', 'betrayal', 'fishing'])):
+        async def cmd_party_other(ctx: slash.Context, activity: slash.Option(
+            description='Activity',
+            required=True,
+            choices=['youtube', 'poker', 'chess', 'betrayal', 'fishing'])):
             """Create a discord party."""
-            link = together_controls.create_link(ctx.author.voice.channel.id, activity)
+            link = together_controls.create_link(ctx.author.voice.channel.id,
+                                                 activity)
             await ctx.respond(f"Click the blue link!\n{link}")
 
-        
         @self.client.slash_cmd(name='poll')
-        async def cmd_poll(ctx: slash.Context, question: slash.Option(description='Question', required=True), 
-        option1: slash.Option(description='Answer', required=True) = '',
-        option2: slash.Option(description='Answer', required=True) = '',
-        option3: slash.Option(description='Answer') = '',
-        option4: slash.Option(description='Answer') = '',
-        option5: slash.Option(description='Answer') = '',
-        option6: slash.Option(description='Answer') = '',
-        option7: slash.Option(description='Answer') = '',
-        option8: slash.Option(description='Answer') = '',
-        option9: slash.Option(description='Answer') = ''):
+        async def cmd_poll(ctx: slash.Context,
+                           question: slash.Option(description='Question',
+                                                  required=True),
+                           option1: slash.Option(description='Answer',
+                                                 required=True) = '',
+                           option2: slash.Option(description='Answer',
+                                                 required=True) = '',
+                           option3: slash.Option(description='Answer') = '',
+                           option4: slash.Option(description='Answer') = '',
+                           option5: slash.Option(description='Answer') = '',
+                           option6: slash.Option(description='Answer') = '',
+                           option7: slash.Option(description='Answer') = '',
+                           option8: slash.Option(description='Answer') = '',
+                           option9: slash.Option(description='Answer') = ''):
             """Create a poll."""
-
-            emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣']
+            
+            emojis = [
+                '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'
+            ]
 
             options = []
             if option1 != '':
@@ -176,22 +186,24 @@ class CogCommands(commands.Cog):
 
             if len(options) > 1:
                 if len(options) <= 9:
-                    embed = discord.Embed(title=question, color=discord.Color.blurple())
+                    embed = discord.Embed(title=question,
+                                          color=discord.Color.blurple())
                     embed.set_thumbnail(url=ctx.author.avatar_url)
                     embed.set_footer(text='Poll by {}'.format(ctx.author.name))
                     for i in range(len(options)):
                         embed.add_field(name=options[i], value=emojis[i])
-                    
+
                     await ctx.respond('Created poll!', ephemeral=True)
 
-                    message = await ctx.send(embed=embed) 
+                    message = await ctx.send(embed=embed)
 
                     for i in range(len(options)):
                         await message.add_reaction(emojis[i])
                 else:
                     await ctx.respond('To many options!', ephemeral=True)
             else:
-                await ctx.respond('You need atleast two options!', ephemeral=True)
+                await ctx.respond('You need atleast two options!',
+                                  ephemeral=True)
 
 
 def setup(client):

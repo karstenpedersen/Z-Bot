@@ -33,16 +33,14 @@ class CogAudio(commands.Cog):
             voice_client = self.client.voice_clients[0]
             await voice_client.disconnect()
             await ctx.respond('The bot left', ephemeral=True)
-            #else:
-            #    await ctx.respond('The bot is not in a channel!', ephemeral=True)
 
-        @audio.slash_cmd(name='play')
-        async def cmd_audio_add(ctx: slash.Context, url: slash.Option(description='Link')):
-            """Add a video to the queue."""
-            voice_client = self.client.voice_clients[0]
-            player = await voice_client.create_ytdl_player(url)
-            players[ctx.author.guild.id] = player
-            player.start()
+        #@audio.slash_cmd(name='play')
+        #async def cmd_audio_add(ctx: slash.Context, url: slash.Option(description='Link')):
+            #"""Add a video to the queue."""
+            #voice_client = self.client.voice_clients[0]
+            #player = await voice_client.create_ytdl_player(url)
+            #players[ctx.author.guild.id] = player
+            #player.start()
 
             #https://www.youtube.com/watch?v=MEg-oqI9qmw
 

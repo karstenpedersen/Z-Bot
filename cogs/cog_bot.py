@@ -29,13 +29,22 @@ class CogBot(commands.Cog):
         @bot.slash_cmd(name='info')
         async def cmd_bot_info(ctx: slash.Context):
             """Gets the bots status."""
-            embed = discord.Embed(title=f'Z-bot',
-                                  color=discord.Color.blurple())
+            embed = discord.Embed(
+                title=f'Z-bot',
+                description=
+                'Z-bot is an Discord bot that uses slash commands. Find more info here:\nhttps://github.com/karstenpedersen/z-bot',
+                color=discord.Color.blurple())
             embed.set_thumbnail(url=client.user.avatar_url)
-            embed.add_field(name='Profile status', value=db['bot_status'], inline=False)
+            embed.add_field(name='Profile status',
+                            value=db['bot_status'],
+                            inline=False)
             embed.add_field(name='Cogs', value=self.client.cogs, inline=False)
-            embed.add_field(name='Extensions', value=self.client.extensions, inline=False)
-            embed.add_field(name='Commands', value=self.client.commands, inline=False)
+            embed.add_field(name='Extensions',
+                            value=self.client.extensions,
+                            inline=False)
+            embed.add_field(name='Commands',
+                            value=self.client.commands,
+                            inline=False)
             await ctx.respond(embed=embed)
 
 

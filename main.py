@@ -1,4 +1,3 @@
-
 import os
 import logging
 import discord
@@ -18,28 +17,32 @@ client = slash.SlashBot(
     resolve_not_fetch=False,
     fetch_if_not_get=True)
 
-print(dir(slash.SlashBot))
 
 # Client events
 @client.event
 async def on_ready():
+    print('\nStarting the bot')
+    print(' * Validating database')
     methods.check_database()
 
     await client.change_presence(status=discord.Status.online,
                                  activity=discord.Game(name=str(
                                      db['bot_status']),
                                                        type=3))
-
+    
     # Load extensions
+    print(' * Loading cog extensions')
     for extension in SETTINGS['EXTENSIONS']:
         client.load_extension('cogs.{}'.format(extension))
+        print('   * {}'.format(extension))
 
-    print('[SUCCESS] The bot is ready')
+    print(' * The bot is now ready\n')
 
 
 @client.event
 async def on_slash_permissions():
     await client.register_permissions()
+    print(' * Registered permissions\n')
 
 
 @client.event
@@ -55,7 +58,7 @@ async def on_message(message):
                     "%m/%d/%Y") != userdata['money_earn_date']:
             userdata['money_earn_count'] = 0
             methods.save_userdata(message.author, userdata)
-        
+
         if not message.content.startswith(SETTINGS['PREFIX']):
             # Level system
             time_string = datetime.datetime.now().strftime("%H/%M/%S")

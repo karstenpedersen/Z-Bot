@@ -6,7 +6,7 @@ import methods
 class CogAdmin(commands.Cog):
     def __init__(self, client):
         self.client = client
-
+        
         @self.client.slash_group()
         async def admin(ctx: slash.Context):
             """Admin commands."""
@@ -19,7 +19,7 @@ class CogAdmin(commands.Cog):
             else:
                 await ctx.respond(embeds=[
                     discord.Embed(title='Not an admin!', color=0xff0000)
-                ])
+                ], ephemeral=True)
                 return False
 
         @admin.slash_cmd(name='purge')

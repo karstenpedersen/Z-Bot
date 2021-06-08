@@ -11,6 +11,7 @@ flask = "^2.0.1"
 discord-together = "^1.0.7"
 replit = "^3.1.0"
 discord-ext-slash = "^0.7.0"
+youtube_dl = "^2021.6.6"
 
 [tool.poetry.dev-dependencies]
 
