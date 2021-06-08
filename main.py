@@ -18,6 +18,7 @@ client = slash.SlashBot(
     resolve_not_fetch=False,
     fetch_if_not_get=True)
 
+print(dir(slash.SlashBot))
 
 # Client events
 @client.event

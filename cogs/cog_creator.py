@@ -10,7 +10,7 @@ class CogCreator(commands.Cog):
 
         @self.client.slash_group()
         async def database(ctx: slash.Context):
-            """Creator commands."""
+            """Database commands."""
             print('Options:', ctx.options)
 
         @database.check

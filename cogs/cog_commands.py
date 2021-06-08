@@ -8,13 +8,13 @@ import methods
 from settings import SETTINGS
 import datetime
 from replit import db
-#from discordTogether import DiscordTogether
+from discordTogether import DiscordTogether
 
 
 class CogCommands(commands.Cog):
     def __init__(self, client):
         self.client = client
-        #together_controls = DiscordTogether(client)
+        together_controls = DiscordTogether(client)
 
         @self.client.slash_cmd(name='hack')
         async def cmd_hack(ctx: slash.Context, user: slash.Option(
@@ -126,79 +126,72 @@ class CogCommands(commands.Cog):
             """Party commands."""
             print('Options:', ctx.options)
         
-        #@party.slash_cmd(name='youtube')
-        #async def cmd_party_youtube(ctx: slash.Context):
+        @party.slash_cmd(name='youtube')
+        async def cmd_party_youtube(ctx: slash.Context):
             """Create a youtube party."""
-            #link = together_controls.create_link(ctx.author.voice.channel.id, 'youtube')
-            #await ctx.respond(f"Click the blue link!\n{link}")
+            link = together_controls.create_link(ctx.author.voice.channel.id, 'youtube')
+            await ctx.respond(f"Click the blue link!\n{link}")
 
-        #@party.slash_cmd(name='other')
-        #async def cmd_party_other(ctx: slash.Context, activity: slash.Option(description='Activity', required=True, choices=['youtube', 'poker', 'chess', #'betrayal', 'fishing'])):
-            #"""Create a discord party."""
-            #link = together_controls.create_link(ctx.author.voice.channel.id, activity)
-            #await ctx.respond(f"Click the blue link!\n{link}")
+        @party.slash_cmd(name='other')
+        async def cmd_party_other(ctx: slash.Context, activity: slash.Option(description='Activity', required=True, choices=['youtube', 'poker', 'chess', 'betrayal', 'fishing'])):
+            """Create a discord party."""
+            link = together_controls.create_link(ctx.author.voice.channel.id, activity)
+            await ctx.respond(f"Click the blue link!\n{link}")
 
-        # Level
-        @self.client.slash_cmd(name='level')
-        async def cmd_level(
-            ctx: slash.Context,
-            user: slash.Option(
-                description='A user',
-                type=slash.ApplicationCommandOptionType.USER) = None):
-            """Get a users level."""
-            if user == None:
-                user = ctx.author
-            methods.check_user(user)
-            userdata = methods.get_userdata(user)
-            user_level = userdata['level']
-            user_experience = userdata['experience']
-            user_needed_experience = user_level * SETTINGS['XP_MULTIPLIER']
-            embed = discord.Embed(title=f"{user.name}'s level",
-                                  color=discord.Color.greyple())
-            embed.set_thumbnail(url=user.avatar_url)
-            embed.add_field(name='Level', value='{}'.format(user_level))
-            embed.add_field(name='Experience',
-                            value='{}/{}'.format(user_experience,
-                                                 user_needed_experience))
-            await ctx.respond(embed=embed)
+        
+        @self.client.slash_cmd(name='poll')
+        async def cmd_poll(ctx: slash.Context, question: slash.Option(description='Question', required=True), 
+        option1: slash.Option(description='Answer', required=True) = '',
+        option2: slash.Option(description='Answer', required=True) = '',
+        option3: slash.Option(description='Answer') = '',
+        option4: slash.Option(description='Answer') = '',
+        option5: slash.Option(description='Answer') = '',
+        option6: slash.Option(description='Answer') = '',
+        option7: slash.Option(description='Answer') = '',
+        option8: slash.Option(description='Answer') = '',
+        option9: slash.Option(description='Answer') = ''):
+            """Create a poll."""
 
-        # Roles
-        @self.client.slash_group()
-        async def role(ctx: slash.Context):
-            """Role commands."""
-            print('Options:', ctx.options)
+            emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣']
 
-        role_opt = slash.Option(description='Account',
-                                required=True,
-                                choices=SETTINGS['JOINABLE_ROLES'])
+            options = []
+            if option1 != '':
+                options.append(option1)
+            if option2 != '':
+                options.append(option2)
+            if option3 != '':
+                options.append(option3)
+            if option4 != '':
+                options.append(option4)
+            if option5 != '':
+                options.append(option5)
+            if option6 != '':
+                options.append(option6)
+            if option7 != '':
+                options.append(option7)
+            if option8 != '':
+                options.append(option8)
+            if option9 != '':
+                options.append(option9)
 
-        @role.slash_cmd(name='join')
-        async def cmd_role_join(ctx: slash.Context, role_name: role_opt):
-            """Join a joinable role."""
+            if len(options) > 1:
+                if len(options) <= 9:
+                    embed = discord.Embed(title=question, color=discord.Color.blurple())
+                    embed.set_thumbnail(url=ctx.author.avatar_url)
+                    embed.set_footer(text='Poll by {}'.format(ctx.author.name))
+                    for i in range(len(options)):
+                        embed.add_field(name=options[i], value=emojis[i])
+                    
+                    await ctx.respond('Created poll!', ephemeral=True)
 
-            role = discord.utils.get(ctx.author.guild.roles, name=role_name)
+                    message = await ctx.send(embed=embed) 
 
-            if role not in ctx.author.roles:
-                await ctx.author.add_roles(role)
-                await ctx.respond('{} joined "{}"'.format(
-                    ctx.author, role_name))
+                    for i in range(len(options)):
+                        await message.add_reaction(emojis[i])
+                else:
+                    await ctx.respond('To many options!', ephemeral=True)
             else:
-                await ctx.respond('You already have the role.'.format(
-                    ctx.author, role_name))
-
-        @role.slash_cmd(name='leave')
-        async def cmd_role_leave(ctx: slash.Context, role_name: role_opt):
-            """Leave a joinable role."""
-
-            role = discord.utils.get(ctx.author.guild.roles, name=role_name)
-
-            if role in ctx.author.roles:
-                await ctx.author.remove_roles(role)
-                await ctx.respond('{} leaved "{}"'.format(
-                    ctx.author, role_name))
-            else:
-                await ctx.respond('You already don\'t have the role.'.format(
-                    ctx.author, role_name))
+                await ctx.respond('You need atleast two options!', ephemeral=True)
 
 
 def setup(client):

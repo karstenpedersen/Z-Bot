@@ -12,25 +12,13 @@ SETTINGS = {
         'cog_bot',
         'cog_admin',
         'cog_creator',
+        'cog_roles',
+        #'cog_audio',
     ],
     'JOINABLE_ROLES': [
         '🎮 Party games',
         '🎮 Minecraft',
         '📰 Food reviews',
-        '▶️ Videos',
+        '📰 Videos',
     ],
 }
-
-#PREFIX = '/'
-#CURRENCY = 'z'
-#MAX_EARNINGS = 20
-#DEBUG = True
-#XP_MULTIPLIER = 5
-#EXTENSIONS = [
-#    'cog_commands',
-#    'cog_bank',
-#    'cog_meme',
-#    'cog_bot',
-#    'cog_admin',
-#    'cog_creator',
-#]
